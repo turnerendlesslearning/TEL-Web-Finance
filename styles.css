@@ -1,0 +1,212 @@
+@CHARSET "UTF-8";
+
+h1 {
+	margin-bottom:0px;
+	padding-bottom:0px;
+}
+.tableStyle2 {
+	border: 1px solid #8484FF;
+	border-collapse:collapse;
+	
+}
+.tableStyle2 tr.header {
+	background-color: #8484FF;
+	font-weight:bold;
+}
+.tableStyle2 tr.footer {
+	background-color: #E6E6FF;
+	font-decoration:italic;
+}
+.tableStyle2 td {
+	padding-left: 15px;
+	padding-right: 15px;
+}
+.tableStyle2 td.center {
+	text-align:center;
+}
+
+
+.tableStyle1 {
+	border: 1px solid #8484FF;
+	border-collapse:collapse;
+	
+}
+.tableStyle1 tr.odd {
+	background-color:#DEDEFF;
+	
+}
+.tableStyle1 tr:hover {
+	background-color:#B1B1FF;
+}
+.tableStyle1 tr.header {
+	background-color: #8484FF;
+	font-weight:bold;
+}
+.tableStyle1 tr.footer {
+	background-color: #E6E6FF;
+	font-decoration:italic;
+	font-weight:bold;
+}
+.tableStyle1 td {
+	padding-left: 15px;
+	padding-right: 15px;
+}
+.tableStyle1 td.center {
+	text-align:center;
+}
+
+
+#newTransDiv {
+	display:none;
+}
+#totalSpan {
+}
+#totalSpanCell {
+	text-align:right;
+}
+#updateTotalCell {
+	text-align:right;
+}
+.moneyCell {
+	text-align:right;
+}
+.ledgerHeader {
+	text-align: right;
+}
+#budgetTable tr.footer {
+	color:red;
+}
+#budgetTable tr.header {
+	text-align:center;
+}
+#budgetTable {
+	text-align:right;
+}
+
+#budgetTable td {
+	white-space: nowrap;
+}
+#editMasterDiv {
+	display:none;
+}
+#editLocalDiv {
+	display:none;
+}
+#catNameSpan {
+	color:red;
+}
+
+
+/* ******************************************************************** */
+/* tintedPane: A tinted pane to cover all screen in semi-dark			*/
+/* ******************************************************************** */
+.tintedPane {
+	background-color: rgb(0, 0, 0);
+	opacity: 0.7; /* Safari, Opera */
+	-moz-opacity:0.70; /* FireFox */
+	filter: alpha(opacity=70); /* IE */
+	z-index: 20;
+	height: 100%;
+	width: 100%;
+	background-repeat:repeat;
+	position:fixed;
+	top: 0px;
+	left: 0px;
+	display:none;
+}
+.messageBoxHolder {
+	z-index: 21;
+	height: 100%;
+	width: 100%;
+	background-repeat:repeat;
+	position:fixed;
+	top: 0px;
+	left: 0px;
+	display:none;
+	overflow:scroll;
+}
+.messageBox {
+	background-color:white;
+	z-index:22;
+	width:90%;
+	border:4px solid black;
+	padding:20px;
+	text-align:center;
+	font-size:16px;
+	margin-top:50px;
+	margin-left:auto;
+	margin-right:auto;
+}
+
+
+
+
+
+
+#transferAccount {
+	display:none;
+}
+#deleteTransactionButton {
+	display:none;
+}
+
+
+
+
+
+
+
+/* Big box with list of options */
+#ajax_listOfOptions{
+  position:absolute;  /* Never change this one */
+  width:175px;  /* Width of box */
+  height:250px;  /* Height of box */
+  overflow:auto;  /* Scrolling features */
+  border:1px solid #317082;  /* Dark green border */
+  background-color:#FFF;  /* White background color */
+  text-align:left;
+  font-size:0.9em;
+  z-index:100;
+}
+#ajax_listOfOptions div{  /* General rule for both .optionDiv and .optionDivSelected */
+  margin:1px;    
+  padding:1px;
+  cursor:pointer;
+  font-size:0.9em;
+}
+#ajax_listOfOptions .optionDiv{  /* Div for each item in list */
+  
+}
+#ajax_listOfOptions .optionDivSelected{ /* Selected item in the list */
+  background-color:#317082;
+  color:#FFF;
+}
+#ajax_listOfOptions_iframe{
+  background-color:#F00;
+  position:absolute;
+  z-index:5;
+}
+
+#transactionsDiv {
+	border:solid black 1px;
+}
+
+#reconcileDiv {
+	border:solid black 1px;
+}
+#importDiv {
+	border:solid black 1px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
