@@ -1,3 +1,5 @@
 A Php-MySql based web application to manage personal finances.
 
 Note: Open Flash Chart is used to chart trends.  I did not add it to the respository because of size, but it can be downloaded freely from: http://teethgrinder.co.uk/open-flash-chart/
+
+The database schema is in the sql subdirectory.  It can be imported using phpmyadmin after you create your database.
