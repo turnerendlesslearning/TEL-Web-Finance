@@ -88,11 +88,6 @@ if(!isset($_SESSION['username'])) {
 	</div>
 	
 	<br />
-	<div id="linksDiv">
-	<b>Links</b><br />
-	<a href="https://online.bankofkc.com/servlet/SLogin?template=/px/en/sloginsc.vm&login=true" target="_blank">NBKC</a><br />
-	</div>
-	<br />
 	<div id="budgetDiv">
 	<b>Budget</b><br />
 	<a href="editBudget.php">Edit Budget</a><br />
