@@ -1,4 +1,4 @@
-/*
+<!-- /*
 * Copyright (C) 2011 Michael Turner <michael at turnerendlesslearning.com>
 *
 * This program is free software: you can redistribute it and/or modify it under
@@ -12,7 +12,7 @@
 *
 * You should have received a copy of the GNU General Public License along with
 * this program. If not, see <http://www.gnu.org/licenses/>.
-*/
+*/ -->
 
 <html>
 <head>

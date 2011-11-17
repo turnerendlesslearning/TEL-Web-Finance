@@ -1,3 +1,5 @@
+<?php
+
 /*
 * Copyright (C) 2011 Michael Turner <michael at turnerendlesslearning.com>
 *
@@ -14,7 +16,6 @@
 * this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-<?php
 function dbConnect() {
 	include_once("./includes/config.php");
 	if(!defined('DB_HOST')) {
@@ -494,9 +495,12 @@ function getBalancePriorToNewTrans($accid, $newTransDate) {
 		ORDER BY transdate DESC, transid DESC LIMIT 1";
 	$result = selectData($query);
 	if($row = getNextDataRow($result)) {
-		return $row['balance'];
+            return $row['balance'];
 	} else {
-		return NULL;
+            /* There were not transactions selected (hence, none prior to
+             * to this, so I can get the account starting balance.
+             */
+            return getStartingBalance($accid);
 	}
 }
 function getAccountBalance($accid) {
@@ -506,7 +510,7 @@ function getAccountBalance($accid) {
 	if($row = getNextDataRow($result)) {
 		return $row['balance'];
 	} else {
-		return NULL;
+            return NULL;
 	}
 }
 function updateBalanceForAllSubsequent($accid, $transdate) {

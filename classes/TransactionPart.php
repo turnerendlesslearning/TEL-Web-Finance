@@ -1,3 +1,5 @@
+<?php
+
 /*
 * Copyright (C) 2011 Michael Turner <michael at turnerendlesslearning.com>
 *
@@ -14,7 +16,7 @@
 * this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-<?php
+
 
 class TransactionPart {
 	public $memo = "";

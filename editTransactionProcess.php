@@ -1,3 +1,5 @@
+<?php
+
 /*
 * Copyright (C) 2011 Michael Turner <michael at turnerendlesslearning.com>
 *
@@ -13,8 +15,6 @@
 * You should have received a copy of the GNU General Public License along with
 * this program. If not, see <http://www.gnu.org/licenses/>.
 */
-
-<?php
 
 //Start Session
 session_start();

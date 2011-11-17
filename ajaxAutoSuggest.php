@@ -1,3 +1,5 @@
+<?php
+
 /*
 * Copyright (C) 2011 Michael Turner <michael at turnerendlesslearning.com>
 *
@@ -14,7 +16,7 @@
 * this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-<?
+
 
 include_once(dirname(__FILE__) . "/includes/db.php");
 

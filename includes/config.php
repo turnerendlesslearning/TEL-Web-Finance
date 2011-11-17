@@ -1,3 +1,4 @@
+<?php
 /*
 * Copyright (C) 2011 Michael Turner <michael at turnerendlesslearning.com>
 *
@@ -14,7 +15,6 @@
 * this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-<?php
 /* This is the path to the MySql database login information.
  * For security purposes, it is best to keep these out of the webroot
  * (in other words, on the server, but above the /www directory

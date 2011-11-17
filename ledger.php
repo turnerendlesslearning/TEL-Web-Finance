@@ -1,3 +1,5 @@
+<?php
+
 /*
 * Copyright (C) 2011 Michael Turner <michael at turnerendlesslearning.com>
 *
@@ -14,7 +16,7 @@
 * this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-<?php
+
 //Start Session
 session_start();
 
@@ -367,7 +369,6 @@ Select CSV File: <input type="file" name="files" />
 		<td>Date</td>
 		<td>Type</td>
 		<td>Number</td>
-	</tr>
 	</tr>
 	
 	

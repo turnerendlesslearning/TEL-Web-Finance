@@ -1,3 +1,4 @@
+<?php
 /*
 * Copyright (C) 2011 Michael Turner <michael at turnerendlesslearning.com>
 *
@@ -14,7 +15,7 @@
 * this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-<?php
+
 $transid = $_GET['tid'];
 $reconid = $_GET['rid'];
 
