@@ -104,12 +104,88 @@ if(!isset($_SESSION['username'])) {
 	?>
 
 <div id="budgetDiv">
+
 <table id="budgetTable" class="tableStyle1">
+<tr colspan="14"><td class="largeTableHeader">Income</td></tr> 
 <tr class="header"><td>Category</td><td>January</td><td>February</td><td>March</td><td>April</td><td>May</td><td>June</td><td>July</td><td>August</td><td>September</td><td>October</td><td>November</td><td>December</td><td>Year</tr>
 
 <?php 
 //Get all the categories
-$res = selectData("SELECT * FROM cat ORDER BY catname ASC");
+$res = selectData("SELECT * FROM cat WHERE (isincome=1) ORDER BY catname ASC");
+$counter = 0;
+$monthTotals = array(0,0,0,0,0,0,0,0,0,0,0,0);
+
+$monthAndYearIncomes = array();
+$monthAndYearExpenses = array();
+
+//WEND through the categories
+while($row = getNextDataRow($res)) {	
+	$catTotal = 0;
+	
+	//See if there is a master amount budgeted
+	$master = 0;
+	$res2 = selectData("SELECT * FROM budget WHERE (catid=". $row['catid'] .") AND (b_month IS NULL)");
+	if($row2 = getNextDataRow($res2)) {
+		$master = $row2['b_amount'];
+	}
+	
+	if($counter % 2) {
+		echo "<tr class=\"odd\">";
+	} else {
+		echo "<tr>";
+	}
+	
+	echo "<td ondblclick=\"editMaster(".$row['catid'].", '".$row['catname']."', $master);\">" . $row['catname'] . "</td>";
+	for($i = 0; $i < 12; $i++) {
+		//Check to see if there is a specific amount budgeted for the month
+		$local = 0;
+		$res_local = selectData("SELECT * FROM budget WHERE (catid = ".$row['catid'].") AND (b_month=$i)");
+		if($row_local = getNextDataRow($res_local)) {
+			$local  = $row_local['b_amount'];
+		}
+		echo "<td ondblclick=\"editLocal(".$row['catid'].", '".$row['catname']."', $local, $i);\">";
+		if($local) {
+			echo "$" . money_format("%n",$local);
+			$monthTotals[$i] += $local;
+			$catTotal += $local;
+		} else if($master) {
+			echo "$" . money_format("%n", $master);
+			$monthTotals[$i] += $master;
+			$catTotal += $master;
+		} else {
+			echo "-";
+		}
+		echo "</td>";
+	}
+	
+	echo "<td>$".money_format("%n", $catTotal) . "</td>";
+	echo "</tr>" . PHP_EOL;
+	$counter++;
+}
+
+//Output the Footer Row
+echo "<tr class=\"footer\">";
+echo "<td></td>";
+
+$yearTotal = 0;
+foreach($monthTotals as $t) {
+	$yearTotal += $t;
+	echo "<td>$".money_format("%n", $t) . "</td>";
+}
+$monthAndYearIncomes = $monthTotals;
+$monthAndYearIncomes[] = $yearTotal;
+echo "<td>$".money_format("%n", $yearTotal) . "</td>";
+echo "</tr>" . PHP_EOL;
+?>
+
+
+
+<tr colspan="14"><td class="largeTableHeader">Expenses</td></tr>
+<tr class="header"><td>Category</td><td>January</td><td>February</td><td>March</td><td>April</td><td>May</td><td>June</td><td>July</td><td>August</td><td>September</td><td>October</td><td>November</td><td>December</td><td>Year</tr>
+
+<?php 
+//Get all the categories
+$res = selectData("SELECT * FROM cat WHERE (isincome=0) ORDER BY catname ASC");
 $counter = 0;
 $monthTotals = array(0,0,0,0,0,0,0,0,0,0,0,0);
 
@@ -167,10 +243,24 @@ foreach($monthTotals as $t) {
 	$yearTotal += $t;
 	echo "<td>$".money_format("%n", $t) . "</td>";
 }
+$monthAndYearExpenses = $monthTotals;
+$monthAndYearExpenses[] = $yearTotal;
 echo "<td>$".money_format("%n", $yearTotal) . "</td>";
 echo "</tr>" . PHP_EOL;
-?>
 
+
+
+?>
+<tr colspan="14"><td class="largeTableHeader">Differences</td></tr>
+<tr class="header"><td>Category</td><td>January</td><td>February</td><td>March</td><td>April</td><td>May</td><td>June</td><td>July</td><td>August</td><td>September</td><td>October</td><td>November</td><td>December</td><td>Year</tr>
+<?php
+echo "<tr><td></td>";
+for($i = 0; $i < 13; $i++) {
+	echo "<td>$".money_format("%n", ($monthAndYearExpenses[$i] + $monthAndYearIncomes[$i])) . "</td>";
+}
+echo "</tr>" . PHP_EOL; 
+
+?>
 
 
 </table>

@@ -22,8 +22,6 @@ session_start();
 
 //Includes
 include_once(dirname(__FILE__) . "/classes/Ledger.php");
-
-
 include_once(dirname(__FILE__) . "/includes/config.php");
 include_once(dirname(__FILE__) . "/includes/security.php");
 include_once(dirname(__FILE__) . "/includes/db.php");
@@ -88,9 +86,10 @@ if(!isset($_SESSION['username'])) {
 	</div>
 	
 	<br />
-	<div id="budgetDiv">
-	<b>Budget</b><br />
+	<div id="otherDiv">
+	<b>Other</b><br />
 	<a href="editBudget.php">Edit Budget</a><br />
+        <a href="editCategories.php">Edit Categories</a><br />
 	</div>
 	<br />
 	<div id="reportsDiv">

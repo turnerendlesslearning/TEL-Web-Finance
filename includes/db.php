@@ -103,6 +103,98 @@ function getAccounts() {
 	}
 	return $data;
 }
+function getCategories($incomeOrExpenses=null) {
+    $query = "SELECT * FROM cat";
+    if($incomeOrExpenses == "INCOME") {
+        $query .= " WHERE (isincome=1)";
+    } else if($incomeOrExpenses == "EXPENSES") {
+        $query .= " WHERE (isincome=0)";
+    }
+    $query .= " ORDER BY isincome ASC, catname ASC";
+    $data = selectData($query);
+    if(is_string($data) || !$data) {
+        return FALSE;
+    }
+    return $data;
+}
+function mergeCategories($sourceCategoryId, $targetCategoryId) {
+    //Update all transactions having the sourceCatId to the targCatId
+    $query = "UPDATE transparts SET catid=$targetCategoryId WHERE " . 
+            "catid=$sourceCategoryId";
+    updateData($query);
+    deleteData("DELETE FROM budget WHERE catid=$sourceCategoryId");
+    
+    //Delete the source category
+    $query = "DELETE FROM cat WHERE (catid=$sourceCategoryId)";
+    deleteData($query);
+}
+function loadBudgetCategories($startDate, $endDate, $isincome, $parent=null) {
+    $catquery = "SELECT * FROM cat WHERE " .
+            "(cat.isincome = $isincome) AND ";
+    if($parent == null) {
+        $catquery .= "(cat.catname NOT LIKE '%:%') ";
+    } else {
+        $catquery .= "(cat.catname LIKE '".$parent->name.":%') ";
+    }
+    $catquery .= "ORDER BY cat.catname ASC";
+    $catresult = selectData($catquery);
+    if (!is_object($catresult) || $catresult->num_rows == 0) {
+        return null;
+    }
+
+    $cats = array();
+    while ($row = $catresult->fetch_assoc()) {
+        //Create Category Object
+        $c = new Category($row['catid']);
+        
+        //Add Basic Details
+        $c->name = $row['catname'];
+        $c->isincome = $row['isincome'];
+        $c->prorated = $row['prorate'];
+        $c->parent = $parent;
+        /* TODO: This system is only capable of looking at one month.  Hence
+         * we're getting the budgeted amount for this month based on the
+         * startdate.  A more complex system will calculate for the start 
+         * month, end month and intervening months... but that's for later.
+         */
+        $month = date("m", strtotime($startDate));
+        $c->budgeted = getBudgetedAmount($c->id, $month);
+
+        //Load any transactions in this category
+        $c->loadTransactions($startDate, $endDate);
+        
+        //Add totals to parent category
+        $c->addMoneyToParent($c->total, $c->budgeted);
+        
+        //Load any budget subcategories
+        $c->subcategories = loadBudgetCategories($startDate, $endDate,
+                $isincome, $c);
+        
+        //Add the category to the array
+        $cats[] = $c;
+    }
+    return $cats;
+}
+function getBudgetedAmount($catid, $month) {
+    //First check for a specified amount for that particular month
+    $result = selectData("SELECT * FROM budget WHERE (catid=".$catid.
+            ") AND (b_month=".$month.")");
+    if(is_object($result) && ($result->num_rows > 0)) {
+        $row = $result->fetch_assoc();
+        return $row['b_amount'];
+    } else {
+        //If not, check for a NULL month (general amount)
+        $result = selectData("SELECT * FROM budget WHERE (catid=$catid) AND ".
+                "(b_month IS NULL)");
+        if(is_object($result) && ($result->num_rows>0)) { 
+            $row = $result->fetch_assoc();
+            return $row['b_amount'];
+        }
+    }
+    
+    //If not, return 0
+    return 0;
+}
 function getAccountName($accid) {
 	$data = selectData("SELECT accname FROM acc WHERE (accid = $accid)");
 	$row = getNextDataRow($data);
@@ -384,6 +476,17 @@ function getAccountStartDate($accountid) {
 	$res = selectData($query);
 	$row = getNextDataRow($res);
 	return $row['sdate'];	//returned as a string
+}
+function isTransactionReconciled($transid) {
+    $query = "SELECT reconid FROM trans WHERE (transid = $transid)";
+    $result = selectData($query);
+    $row = getNextDataRow($result);
+    if($row == NULL) return;
+    if($row['reconid'] == NULL) {
+        return false;
+    } else {
+        return $row['reconid'];
+    }
 }
 function getUnfinishedReconId($accountid) {
 	$query = "SELECT * FROM recon WHERE (accid=$accountid) AND (completed IS NULL)";

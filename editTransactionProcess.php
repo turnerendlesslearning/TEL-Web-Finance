@@ -36,13 +36,20 @@ if(!isset($_SESSION['username'])) {
 		//delete the transaction and it's parts, then proceed to re-add it
 		
 	if($_POST['transpayee'] != 'transfer') {
-
+                //Find out if it is a reconciled transation
+                $reconid = isTransactionReconciled($_POST['transid']);
+                if(!$reconid) {
+                    $reconid = "NULL";
+                }
+                
 		$dQuery = "DELETE FROM trans WHERE (transid = " . $_POST['transid'] . 
 			")";
 		deleteData($dQuery);
 		$dQuery = "DELETE FROM transparts WHERE (transid = ". 
 			$_POST['transid'] . ")";
 		deleteData($dQuery);
+                
+                
 		
 		
 		
@@ -67,8 +74,8 @@ if(!isset($_SESSION['username'])) {
 		}
 		
 		$query = "INSERT INTO trans (transdate, transtypeid, transnumber, 
-			transpayee, accid) VALUES ('$transdate', $transtype, 
-			$transnumber, $payeeid, $accid)";
+			transpayee, accid, reconid) VALUES ('$transdate', $transtype, 
+			$transnumber, $payeeid, $accid, $reconid)";
 		$result = insertData($query);
 		
 		if(!$result) {
@@ -135,6 +142,12 @@ if(!isset($_SESSION['username'])) {
 		$mem = $row['memo'];
 		$accid = $_POST['accid'];
 		$targAcct = $row['transnumber'];
+                
+                //Find out if it is a reconciled transation
+                $reconid = isTransactionReconciled($_POST['transid']);
+                if(!$reconid) {
+                    $reconid = "NULL";
+                }
 		
 		//Get the balance prior to this transaction
 		//$oldBalance = getBalancePriorToNewTrans($accid, $transdate);
@@ -159,8 +172,8 @@ if(!isset($_SESSION['username'])) {
 		
 		//Create the outgoing transfer transaction
 		$q = "INSERT INTO trans (transdate, transtypeid, transnumber, 
-			transpayee, accid) VALUES ('$transdate', $transtype, 
-			$transnumber, $payeeid, $accid)";
+			transpayee, accid, reconid) VALUES ('$transdate', $transtype, 
+			$transnumber, $payeeid, $accid, $reconid)";
 		$result = insertData($q);
 		if(!$result) {
 			die("ERROR");
@@ -170,8 +183,8 @@ if(!isset($_SESSION['username'])) {
 		//Create the incoming transfer transaction
 		$transnumber = $accid;
 		$q = "INSERT INTO trans (transdate, transtypeid, transnumber, 
-			transpayee, accid) VALUES ('$transdate', $transtype, $transnumber, 
-			$payeeid, $accidr)";
+			transpayee, accid, reconid) VALUES ('$transdate', $transtype, $transnumber, 
+			$payeeid, $accidr, $reconid)";
 		$result = insertData($q);
 		if(!$result) {
 			die("ERROR");
